@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://Asp-fresh.github.io</id>
     <title>Gridea</title>
-    <updated>2020-05-02T08:18:01.228Z</updated>
+    <updated>2020-05-02T08:26:20.776Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://Asp-fresh.github.io"/>
     <link rel="self" href="https://Asp-fresh.github.io/atom.xml"/>
@@ -10,6 +10,49 @@
     <logo>https://Asp-fresh.github.io/images/avatar.png</logo>
     <icon>https://Asp-fresh.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, Gridea</rights>
+    <entry>
+        <title type="html"><![CDATA[Gridea博客初建测试]]></title>
+        <id>https://Asp-fresh.github.io/post/gridea-bo-ke-chu-jian-ce-shi/</id>
+        <link href="https://Asp-fresh.github.io/post/gridea-bo-ke-chu-jian-ce-shi/">
+        </link>
+        <updated>2020-05-02T08:20:01.000Z</updated>
+        <content type="html"><![CDATA[<p>新笔趣阁小说爬虫</p>
+<pre><code class="language-python">import requests
+import time
+from tqdm import tqdm
+from bs4 import BeautifulSoup
+
+def get_content(target):
+    req = requests.get(url = target)
+    req.encoding = 'utf-8'
+    html = req.text
+    bf = BeautifulSoup(html, 'lxml')
+    texts = bf.find('div', id='content')
+    content = texts.text.strip().split('\xa0'*4)
+    return content
+
+if __name__ == '__main__':
+    server = 'https://www.xsbiquge.com'
+    book_name = input(&quot;请输入书籍名称：&quot;)
+    target = input(&quot;请输入目标网址： &quot;)
+    req = requests.get(url = target)
+    req.encoding = 'utf-8'
+    html = req.text
+    chapter_bs = BeautifulSoup(html, 'lxml')
+    chapters = chapter_bs.find('div', id='list')
+    chapters = chapters.find_all('a')
+    for chapter in tqdm(chapters):
+        chapter_name = chapter.string
+        url = server + chapter.get('href')
+        content = get_content(url)
+        with open(book_name, 'a', encoding='utf-8') as f:
+            f.write(chapter_name)
+            f.write('\n')
+            f.write('\n'.join(content))
+            f.write('\n')
+    ```</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Hello Gridea]]></title>
         <id>https://Asp-fresh.github.io/post/hello-gridea/</id>
